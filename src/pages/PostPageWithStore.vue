@@ -1,4 +1,5 @@
 <template>
+  <p>{{ $store.state.isAuth ? 'You are authorised': 'you are not authorised, go to authorisation' }}</p>
   <h1>Page thate uses store vuex</h1>
     <h2>My store state : {{ $store.state.likes }}</h2>
     <h3>Double likes: {{ $store.getters.doubleLikes }}</h3>
