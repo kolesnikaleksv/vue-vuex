@@ -3,6 +3,7 @@ import Main from '@/pages/MainPage.vue'
 import PostsPage from '@/pages/PostsPage.vue'
 import PostPage from '@/pages/PostPage.vue'
 import PostIdPage from '@/pages/PostIdPage.vue'
+import PostPageWithStore from '@/pages/PostPageWithStore.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,10 @@ const router = createRouter({
     {
       path: '/tutor/:id',
       component: PostIdPage
+    },
+    {
+      path: '/store',
+      component: PostPageWithStore
     },
   ]
 })
