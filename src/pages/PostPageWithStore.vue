@@ -1,14 +1,13 @@
 <template>
-  <!-- <p>{{ $store.state.isAuth ? 'You are authorised': 'you are not authorised, go to authorisation' }}</p>
-  <h1>Page thate uses store vuex</h1>
-    <h2>My store state : {{ $store.state.likes }}</h2>
-    <h3>Double likes: {{ $store.getters.doubleLikes }}</h3> -->
-    <!-- <main-button class="btn primary" @click="$store.commit('likeIncr')">Add likes</main-button>
-    <main-button class="btn primary" @click="$store.commit('likeDecr')">Remove likes</main-button> -->
   <hr/>
   <!-- <h3>Our state limit - {{ $store.state.post.limit }}</h3> -->
-  <BaseInput class="width-item"
+  <!-- <BaseInput class="width-item"
     v-model="searchQuery"
+    placeholder="Search..."
+    v-focus/> -->
+    <BaseInput class="width-item"
+    :model-value="searchQuery"
+    @update:model-value="setSearchQuery"
     placeholder="Search..."
     v-focus/>
   <div class="tools">
@@ -54,7 +53,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setPage: 'post/setPage'
+      setPage: 'post/setPage',
+      setSearchQuery: 'post/setSearchQuery'
     }),
     ...mapActions({
       loadMorePosts: 'post/loadMorePosts',
