@@ -19,8 +19,13 @@
         fetch posts
       </MainButton>
     </div>
-    <my-select 
+    <!-- <my-select 
       v-model="selectedSort"
+      :options="sortOptions"
+      /> -->
+      <my-select 
+      :model-value="selectedSort"
+      @update:model-value="setSelectedSort"
       :options="sortOptions"
       />
   </div>
@@ -54,7 +59,8 @@ export default {
   methods: {
     ...mapMutations({
       setPage: 'post/setPage',
-      setSearchQuery: 'post/setSearchQuery'
+      setSearchQuery: 'post/setSearchQuery',
+      setSelectedSort: 'post/setSelectedSort'
     }),
     ...mapActions({
       loadMorePosts: 'post/loadMorePosts',

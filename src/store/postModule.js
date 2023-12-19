@@ -60,13 +60,13 @@ export const postModule = {
     },
     async loadMorePosts({state, commit}) {
       try{
-        commit('setPage', state.page++)
+        commit('setPage', state.page += 1); // state.page++ don't work
         const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
           params: {
             _page: state.page,
             _limit: state.limit
           }
-        });
+        });console.log(responce.data)
         commit('setTotalPages', Math.ceil(responce.headers['x-total-count'] / state.limit))
         commit('setPosts', [...state.posts, ...responce.data]);
       } catch(e) {
