@@ -1,11 +1,12 @@
 <template>
-  <p>{{ $store.state.isAuth ? 'You are authorised': 'you are not authorised, go to authorisation' }}</p>
+  <!-- <p>{{ $store.state.isAuth ? 'You are authorised': 'you are not authorised, go to authorisation' }}</p>
   <h1>Page thate uses store vuex</h1>
     <h2>My store state : {{ $store.state.likes }}</h2>
-    <h3>Double likes: {{ $store.getters.doubleLikes }}</h3>
-    <main-button class="btn primary" @click="$store.commit('likeIncr')">Add likes</main-button>
-    <main-button class="btn primary" @click="$store.commit('likeDecr')">Remove likes</main-button>
+    <h3>Double likes: {{ $store.getters.doubleLikes }}</h3> -->
+    <!-- <main-button class="btn primary" @click="$store.commit('likeIncr')">Add likes</main-button>
+    <main-button class="btn primary" @click="$store.commit('likeDecr')">Remove likes</main-button> -->
   <hr/>
+  <!-- <h3>Our state limit - {{ $store.state.post.limit }}</h3> -->
   <BaseInput class="width-item"
     v-model="searchQuery"
     placeholder="Search..."
@@ -30,7 +31,7 @@
   <PostList 
     :posts="sortedPosts" 
     @remove="removePost"
-    v-if="!isFetching"/>
+    v-if="!loading"/>
   <h2 v-else>Loading...</h2>
   <div v-intersection="loadMorePosts" class="observer"></div>
 </template>
@@ -40,6 +41,7 @@ import PostForm from '@/components/PostForm.vue'
 import PostList from '@/components/PostList.vue'
 import Liker from '@/components/Liker.vue'
 import axios from 'axios'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -47,23 +49,17 @@ export default {
   },
   data() {
     return {
-      likes: 0,
-      dislikes: 0,
       visibleDialog: false,
-      isFetching: true,
-      posts: [],
-      selectedSort: '',
-      searchQuery: '',
-      page: 1,
-      limit: 4,
-      totalPages: 2,
-      sortOptions: [
-        {value: 'title', name: 'Sort by name'},
-        {value: 'body', name: 'Sort by text'},
-      ],
     }
   },
   methods: {
+    ...mapMutations({
+      setPage: 'post/setPage'
+    }),
+    ...mapActions({
+      loadMorePosts: 'post/loadMorePosts',
+      fetchPosts: 'post/fetchPosts'
+    }),
     createPost(post) {
       this.posts.push(post);
       this.visibleDialog = false;
@@ -74,47 +70,24 @@ export default {
     openPopup() {
       this.visibleDialog = true
     },
-    async fetchPosts() {
-      try{
-        this.isFetching = true;
-        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-          params: {
-            _page: this.page,
-            _limit: this.limit
-          }
-        });
-        this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
-        this.posts = responce.data;
-      } catch(e) {
-        alert('Error')
-      } finally {
-        this.isFetching = false;
-      }
-    },
-    async loadMorePosts() {
-      try{
-        this.page++
-        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-          params: {
-            _page: this.page,
-            _limit: this.limit
-          }
-        });
-        this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
-        this.posts = [...this.posts, ...responce.data];
-      } catch(e) {
-        alert('Error')
-      }
-    },
   },
   mounted() {
     this.fetchPosts();
   },
   computed: {
-    sortedPosts(){
-      return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
-      .filter(post => post.title.includes(this.searchQuery))
-    }
+    ...mapState({
+      loading: state => state.post.loading,
+      posts: state => state.post.posts,
+      selectedSort: state => state.post.selectedSort,
+      searchQuery: state => state.post.searchQuery,
+      page: state => state.post.page,
+      limit: state => state.post.limit,
+      totalPages: state => state.post.totalPages,
+      sortOptions: state => state.post.sortOptions,
+    }),
+    ...mapGetters({
+      sortedPosts: 'post/sortedPosts'
+    })
   },
 }
 </script>
