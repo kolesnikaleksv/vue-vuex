@@ -66,7 +66,7 @@ export const postModule = {
             _page: state.page,
             _limit: state.limit
           }
-        });console.log(responce.data)
+        });
         commit('setTotalPages', Math.ceil(responce.headers['x-total-count'] / state.limit))
         commit('setPosts', [...state.posts, ...responce.data]);
       } catch(e) {

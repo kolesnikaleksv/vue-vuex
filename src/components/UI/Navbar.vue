@@ -3,6 +3,7 @@
     <MainButton class="btn primary"><RouterLink to="/">Home</RouterLink></MainButton>
     <MainButton class="btn primary"><RouterLink to="/posts">Posts</RouterLink></MainButton>
     <MainButton class="btn primary" @click="$router.push('/store')">PostsPageWithStore</MainButton>
+    <MainButton class="btn primary" @click="$router.push('/compositionApi')">CompositionApi</MainButton>
   </nav>
 </template>
 
