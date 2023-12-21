@@ -1,6 +1,9 @@
 <template>
   <hr/>
-  <BaseInput class="width-item"
+  <h1>{{ likes }}</h1>
+  <button @click="addLikes">add like</button>
+  <button @click="removeLikes">remove like</button>
+  <!-- <BaseInput class="width-item"
     v-model="searchQuery"
     placeholder="Search..."
     v-focus/>
@@ -26,7 +29,7 @@
     @remove="removePost"
     v-if="!isFetching"/>
   <h2 v-else>Loading...</h2>
-  <div v-intersection="loadMorePosts" class="observer"></div>
+  <div v-intersection="loadMorePosts" class="observer"></div> -->
 </template>
 
 <script>
@@ -34,6 +37,8 @@ import PostForm from '@/components/PostForm.vue'
 import PostList from '@/components/PostList.vue'
 import Liker from '@/components/Liker.vue'
 import axios from 'axios'
+import {ref}from 'vue'
+
 
 export default {
   components: {
@@ -48,6 +53,21 @@ export default {
       ],
     }
   },
+  setup(props) {
+    const likes = ref(0);
+    const addLikes = () => {
+      likes.value++
+    };
+    const removeLikes = () => {
+      likes.value--
+    };
+    return {
+      addLikes,
+      removeLikes,
+      likes
+    }
+  },
+  
 }
 </script>
 
